@@ -1,0 +1,22 @@
+---
+- name: ACP playbook
+  hosts: localhost
+  vars:
+    time: "{{ ansible_date_time }}"
+  tasks:
+    - name: Change Log | update change log file
+      lineinfile:
+        dest: /git/ChangeLog/changelog.md
+        insertbefore: BOF
+        line: "{{time.time}} {{time.date}} {{time.weekday}} - {{ lookup('env','ChangeLogEvent') }}. pipeline: {{lookup('env','GO_JOB_NAME')}}. git comm
+it: {{lookup('env','GO_REVISION')}}\\"
+    - name: Change log | git push all changes.
+      git_acp:
+        user: {{ gitUser }}
+        token: {{ gitToken }}
+        path: /git/ChangeLog/
+        branch: master
+        comment: "update CL"
+        add: [ "." ]
+        mode: https
+        url: "https://github.com/shischiff/ChangeLog.git"
