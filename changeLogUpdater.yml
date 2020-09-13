@@ -12,8 +12,8 @@
 it: {{lookup('env','GO_REVISION')}}\\"
     - name: Change log | git push all changes.
       git_acp:
-        user: {{ gitUser }}
-        token: {{ gitToken }}
+        user: "{{ gitUser }}"
+        token: "{{ gitToken }}"
         path: /git/ChangeLog/
         branch: master
         comment: "update CL"
